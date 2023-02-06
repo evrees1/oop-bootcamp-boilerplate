@@ -24,6 +24,11 @@ class RectangleTest {
         assertEquals(area, expected);
     }
 
+    @Test
+    public void itShouldReturnPerimeter() {
+
+    }
+
     private static Stream<Arguments> provideRectangleDimensions() {
         return Stream.of(
                 Arguments.of(5, 10, 50),
