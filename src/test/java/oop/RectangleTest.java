@@ -24,8 +24,9 @@ class RectangleTest {
         assertEquals(area, expected);
     }
 
-    @Test
-    public void itShouldReturnPerimeter() {
+    @ParameterizedTest
+    @MethodSource("provideRectangleDimensionsForArea")
+    public void itShouldReturnPerimeter(int width, int length, int expected) {
 
 
     }
