@@ -27,6 +27,7 @@ class RectangleTest {
     @Test
     public void itShouldReturnPerimeter() {
 
+
     }
 
     private static Stream<Arguments> provideRectangleDimensions() {
