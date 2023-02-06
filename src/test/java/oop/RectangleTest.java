@@ -15,8 +15,8 @@ class RectangleTest {
 
 
     @ParameterizedTest
-    @MethodSource("provideRectangleDimensions")
-    public void itShouldComputeArea(int width, int length, int expected) {
+    @MethodSource("provideRectangleDimensionsForPerimeter")
+    public void itShouldReturnArea(int width, int length, int expected) {
         Rectangle rectangle = new Rectangle(length, width);
 
         int area = rectangle.computeArea();
@@ -30,7 +30,14 @@ class RectangleTest {
 
     }
 
-    private static Stream<Arguments> provideRectangleDimensions() {
+    private static Stream<Arguments> provideRectangleDimensionsForArea() {
+        return Stream.of(
+                Arguments.of(5, 10, 50),
+                Arguments.of(10, 10, 100)
+        );
+    }
+
+    private static Stream<Arguments> provideRectangleDimensionsForPerimeter() {
         return Stream.of(
                 Arguments.of(5, 10, 50),
                 Arguments.of(10, 10, 100)
