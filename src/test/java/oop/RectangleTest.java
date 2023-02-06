@@ -13,20 +13,10 @@ import static org.testng.Assert.assertEquals;
 
 class RectangleTest {
 
-    @Test
-    public void itShouldComputeArea() {
-        int length = 5;
-        int width = 10;
-        Rectangle rectangle = new Rectangle(length, width);
-
-        int area = rectangle.computeArea();
-
-        assertEquals(area, 50);
-    }
 
     @ParameterizedTest
     @MethodSource("provideRectangleDimensions")
-    public void itShouldComputeAreaWhenSquare(int width, int length, int expected) {
+    public void itShouldComputeArea(int width, int length, int expected) {
         Rectangle rectangle = new Rectangle(length, width);
 
         int area = rectangle.computeArea();
