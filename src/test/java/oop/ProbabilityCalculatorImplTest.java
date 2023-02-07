@@ -4,7 +4,6 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.testng.Assert.assertEquals;
 
 class ProbabilityCalculatorImplTest {
@@ -14,22 +13,22 @@ class ProbabilityCalculatorImplTest {
     
     @Test
     public void itShouldReturnChanceWhereMaxIs6() {
-        BigDecimal actual = subject.chanceOf();
+        BigDecimal actual = subject.chanceOfHit();
 
         assertEquals(actual, BigDecimal.valueOf(0.16667));
     }
 
     @Test
     public void itShouldReturnNotChanceWhereMaxIs6() {
-        BigDecimal actual = subject.chanceOfNot();
+        BigDecimal actual = subject.chanceOfNoHit();
 
         assertEquals(actual, BigDecimal.valueOf(0.83333));
     }
 
     @Test
     public void itShouldReturnProductOfTwoChances() {
-        BigDecimal chanceA = subject.chanceOf();
-        BigDecimal chanceB = subject.chanceOfNot();
+        BigDecimal chanceA = subject.chanceOfHit();
+        BigDecimal chanceB = subject.chanceOfNoHit();
 
         BigDecimal actual = subject.productOfChances(chanceA, chanceB);
 
@@ -38,8 +37,8 @@ class ProbabilityCalculatorImplTest {
 
     @Test
     public void itShouldReturnLogicalOrOfTwoChances() {
-        BigDecimal chanceA = subject.chanceOf();
-        BigDecimal chanceB = subject.chanceOfNot();
+        BigDecimal chanceA = subject.chanceOfHit();
+        BigDecimal chanceB = subject.chanceOfNoHit();
 
         BigDecimal actual = subject.logicalOrOf(chanceA, chanceB);
 
