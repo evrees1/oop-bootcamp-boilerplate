@@ -1,4 +1,4 @@
-package oop;
+package oop.modelrectangle;
 
 public class Rectangle {
 

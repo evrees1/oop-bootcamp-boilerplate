@@ -1,14 +1,12 @@
-package oop;
+package oop.chance;
 
-import org.junit.jupiter.api.Test;
+import oop.modelrectangle.Rectangle;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.testng.Assert.assertEquals;
 
 class RectangleTest {

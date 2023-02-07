@@ -1,5 +1,6 @@
-package oop;
+package oop.modelrectangle;
 
+import oop.chance.ProbabilityCalculatorImpl;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
