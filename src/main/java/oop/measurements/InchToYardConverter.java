@@ -3,10 +3,10 @@ package oop.measurements;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-public class FeetToMetresConverter extends MeasurementConvertor {
+public class InchToYardConverter extends MeasurementConvertor {
 
     @Override
     protected BigDecimal factor() {
-        return BigDecimal.valueOf(3.281);
+        return BigDecimal.valueOf(36);
     }
 }
