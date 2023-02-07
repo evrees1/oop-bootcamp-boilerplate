@@ -6,6 +6,11 @@ import java.math.RoundingMode;
 public class FeetToMetresConverter extends MeasurementConvertor {
 
     @Override
+    public BigDecimal convert(double value) {
+        return divide(value);
+    }
+
+    @Override
     protected BigDecimal factor() {
         return BigDecimal.valueOf(3.281);
     }

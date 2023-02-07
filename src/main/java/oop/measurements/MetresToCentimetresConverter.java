@@ -2,10 +2,14 @@ package oop.measurements;
 
 import java.math.BigDecimal;
 
-public class MetresToCentimetresConverter {
+public class MetresToCentimetresConverter extends MeasurementConvertor {
 
     public BigDecimal convert(double metres) {
-        return BigDecimal.valueOf(metres)
-                .multiply(BigDecimal.valueOf(100));
+        return multiply(metres);
+    }
+
+    @Override
+    protected BigDecimal factor() {
+        return BigDecimal.valueOf(100);
     }
 }
