@@ -1,7 +1,4 @@
-package oop.measurements.domain;
-
-import oop.measurements.Unit;
-import org.checkerframework.checker.units.qual.C;
+package oop.measurements;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -15,14 +12,13 @@ public class Celsius extends Unit {
         super(value);
     }
 
-    public double convertToFahrenheit() {
-        return BigDecimal.valueOf(value)
+    public double toFahrenheit() {
+        return BigDecimal.valueOf(value())
                 .multiply(subFactor(), new MathContext(SCALE, RoundingMode.HALF_UP))
                 .doubleValue() + 32;
     }
 
     private BigDecimal subFactor() {
-        return BigDecimal.valueOf(9)
-                .divide(BigDecimal.valueOf(5), 4, RoundingMode.HALF_UP);
+        return BigDecimal.valueOf(1.8);
     }
 }

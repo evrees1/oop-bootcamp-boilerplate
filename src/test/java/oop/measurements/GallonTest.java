@@ -1,6 +1,6 @@
 package oop.measurements;
 
-import org.junit.jupiter.api.Test;
+import oop.measurements.Gallon;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -8,16 +8,16 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-public class GallonsToLitresConverterTest {
-
-    private GallonsToLitresConverter subject = new GallonsToLitresConverter();
+class GallonTest {
 
     @ParameterizedTest
     @MethodSource("provideTestInput")
-    public void itShouldConvertGallonsToLitres(double gallons, double expected) {
-        BigDecimal litres = subject.convert(gallons);
+    public void itShouldConvertGallonsToLitres(double value, double expected) {
+        Gallon subject = new Gallon(value);
+
+        BigDecimal litres = subject.toLitres();
 
         assertEquals(expected, litres.doubleValue());
     }
@@ -28,4 +28,5 @@ public class GallonsToLitresConverterTest {
                 Arguments.of(5.0, 18.927)
         );
     }
+
 }

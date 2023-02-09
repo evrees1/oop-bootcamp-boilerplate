@@ -1,6 +1,6 @@
-package oop.measurements.domain;
+package oop.measurements;
 
-import org.junit.jupiter.api.Test;
+import oop.measurements.Celsius;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -13,8 +13,8 @@ class CelsiusTest {
 
     @ParameterizedTest
     @MethodSource("provideTestInput")
-    public void itShouldConvertToFahrenheit(double celsiusValue, double expected) {
-        double fahrenheit = new Celsius(celsiusValue).convertToFahrenheit();
+    public void toFahrenheitShouldReturnFahrenheit(double celsiusValue, double expected) {
+        double fahrenheit = new Celsius(celsiusValue).toFahrenheit();
 
         assertEquals(expected, fahrenheit);
     }

@@ -1,24 +1,25 @@
 package oop.measurements;
 
+import oop.measurements.Feet;
+import oop.measurements.Metre;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
-class FeetToMetresConverterTest {
-
-    private final FeetToMetresConverter subject = new FeetToMetresConverter();
+class FeetTest {
 
     @ParameterizedTest
     @MethodSource("provideTestInput")
-    public void itShouldReturnMetresForFeetInput(int feet, double expected) {
-        BigDecimal metres = subject.convert(feet);
+    public void toMetresShouldReturnMetresForFeetInput(int feetValue, double expected) {
+        Feet subject = new Feet(feetValue);
 
-        assertEquals(expected, metres.doubleValue());
+        Metre metre = subject.toMetres();
+
+        assertEquals(expected, metre.value());
     }
 
 
