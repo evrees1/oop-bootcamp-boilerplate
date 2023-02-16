@@ -1,13 +1,18 @@
-package oop.parking.domain;
+package oop.parking;
 
-import oop.parking.ParkingLot;
+import oop.parking.domain.Car;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class ParkingLots {
 
     private List<ParkingLot> list;
+
+    public List<ParkingLot> getList() {
+        return list;
+    }
 
     public ParkingLots(List<ParkingLot> list) {
         this.list = list;
@@ -23,5 +28,9 @@ public class ParkingLots {
         return list.stream()
                 .filter(lot -> lot.contains(car))
                 .findFirst();
+    }
+
+    public Stream<ParkingLot> stream() {
+        return list.stream();
     }
 }

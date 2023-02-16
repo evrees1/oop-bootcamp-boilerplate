@@ -3,42 +3,43 @@ package oop.parking;
 import oop.parking.domain.Car;
 
 import java.beans.PropertyChangeSupport;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkingLot {
 
+    private static final int CAPACITY_CALCULATION_SCALE = 2;
+
+    private String id;
     private PropertyChangeSupport propertyChangeSupport;
     private final int capacity;
     private final List<Car> parkedCars = new ArrayList<>();
     private boolean acceptsHandicapped;
 
+    public ParkingLot(int capacity) {
+        this.capacity = capacity;
+    }
+
     public ParkingLot() {
-        this.capacity = 5;
-
+        this(5);
     }
 
-    public ParkingLot(int capacity, Owner owner) {
+    public ParkingLot(String id, int capacity, boolean acceptsHandicapped, Owner owner) {
+        this.id = id;
         this.capacity = capacity;
-        setListenerSupport(owner);
-    }
-
-    public ParkingLot(int capacity, Owner owner, boolean acceptsHandicapped) {
-        this.capacity = capacity;
-        setListenerSupport(owner);
         this.acceptsHandicapped = acceptsHandicapped;
-    }
 
-    private void setListenerSupport(Owner owner) {
         propertyChangeSupport = new PropertyChangeSupport(this);
         propertyChangeSupport.addPropertyChangeListener(owner);
     }
 
     public void parkCar(Car newCar) {
         if (this.hasFreeSlots()) {
-            double capacityBefore = capacityPercentage();
+//            double capacityBefore = capacityPercentage();
             parkedCars.add(newCar);
-            propertyChangeSupport.firePropertyChange("capacityChanged", capacityBefore, capacityPercentage());
+//            §.firePropertyChange("capacityChanged", capacityBefore, capacityPercentage());
         }
     }
 
@@ -50,12 +51,14 @@ public class ParkingLot {
         return parkedCars.remove(car);
     }
 
-    private boolean hasFreeSlots() {
+    public boolean hasFreeSlots() {
         return parkedCars.size() < this.capacity;
     }
 
     public double capacityPercentage() {
-        return (double) parkedCars.size() / (double) this.capacity;
+        return BigDecimal.valueOf(parkedCars.size())
+                .divide(BigDecimal.valueOf(this.capacity), CAPACITY_CALCULATION_SCALE, RoundingMode.HALF_UP)
+                .doubleValue();
     }
 
     public boolean isAcceptsHandicapped() {

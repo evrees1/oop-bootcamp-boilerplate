@@ -2,8 +2,14 @@ package oop.parking.domain;
 
 
 import oop.parking.ParkingStrategy;
+import oop.parking.builder.CarBuilder;
+import oop.parking.strategy.DefaultParkingStrategy;
+import oop.parking.strategy.HandicapParkingStrategy;
+import oop.parking.strategy.LargeCarParkingStrategy;
+import oop.parking.strategy.LargeHandicapParkingStrategy;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CarTest {
@@ -15,13 +21,13 @@ class CarTest {
 
         ParkingStrategy actual = car.findStrategyToPark();
 
-        assertTrue(actual instanceof DefaultParkingStrategy);
+        assertInstanceOf(DefaultParkingStrategy.class, actual);
     }
 
     @Test
     void itShouldReturnLargeStrategyWhenCarLarge() {
         Car car = new CarBuilder("abc")
-                .withLarge(true)
+                .withLarge()
                 .build();
 
         ParkingStrategy actual = car.findStrategyToPark();
@@ -32,7 +38,7 @@ class CarTest {
     @Test
     void itShouldReturnHandicapStrategyWhenCarHandicap() {
         Car car = new CarBuilder("abc")
-                .withHandicapped(true)
+                .withHandicapped()
                 .build();
 
         ParkingStrategy actual = car.findStrategyToPark();
@@ -43,8 +49,8 @@ class CarTest {
     @Test
     void itShouldReturnLargeHandicapStrategyWhenCarLargeHandicap() {
         Car car = new CarBuilder("abc")
-                .withHandicapped(true)
-                .withLarge(true)
+                .withHandicapped()
+                .withLarge()
                 .build();
 
         ParkingStrategy actual = car.findStrategyToPark();

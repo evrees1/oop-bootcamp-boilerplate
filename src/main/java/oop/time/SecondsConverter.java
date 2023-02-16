@@ -1,5 +1,8 @@
 package oop.time;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 public class SecondsConverter {
 
     private static final int MAX_SECONDS = 359999;

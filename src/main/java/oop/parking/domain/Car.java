@@ -1,6 +1,10 @@
 package oop.parking.domain;
 
 import oop.parking.ParkingStrategy;
+import oop.parking.strategy.DefaultParkingStrategy;
+import oop.parking.strategy.HandicapParkingStrategy;
+import oop.parking.strategy.LargeCarParkingStrategy;
+import oop.parking.strategy.LargeHandicapParkingStrategy;
 
 public class Car {
 
@@ -18,6 +22,10 @@ public class Car {
         this.handicapped = handicapped;
     }
 
+    public String getId() {
+        return id;
+    }
+
     public ParkingStrategy findStrategyToPark() {
         if (large && handicapped) {
             return new LargeHandicapParkingStrategy();
@@ -28,10 +36,6 @@ public class Car {
             return new HandicapParkingStrategy();
         }
         return new DefaultParkingStrategy();
-    }
-
-    public String getId() {
-        return id;
     }
 
 }

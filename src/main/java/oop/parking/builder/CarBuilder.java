@@ -1,4 +1,6 @@
-package oop.parking.domain;
+package oop.parking.builder;
+
+import oop.parking.domain.Car;
 
 public class CarBuilder {
     private String id;
@@ -9,13 +11,13 @@ public class CarBuilder {
         this.id = id;
     }
 
-    public CarBuilder withLarge(boolean large) {
-        this.large = large;
+    public CarBuilder withLarge() {
+        this.large = true;
         return this;
     }
 
-    public CarBuilder withHandicapped(boolean handicapped) {
-        this.handicapped = handicapped;
+    public CarBuilder withHandicapped() {
+        this.handicapped = true;
         return this;
     }
 

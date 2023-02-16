@@ -10,13 +10,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ParkingLotTest {
 
-    private Owner owner;
     private ParkingLot parkingLot;
 
     @BeforeEach
     void setUp() {
-        this.owner = new Owner();
-        this.parkingLot = new ParkingLot(2, owner);
+        this.parkingLot = new ParkingLot(2);
     }
 
     @Test
