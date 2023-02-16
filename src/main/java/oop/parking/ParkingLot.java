@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class ParkingLot {
 
@@ -37,28 +39,17 @@ public class ParkingLot {
         propertyChangeSupport.addPropertyChangeListener(owner);
     }
 
-    public void addPropertyChangeListener(PropertyChangeListener listener) {
-        propertyChangeSupport.addPropertyChangeListener(listener);
-    }
-
-    public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
-        this.propertyChangeSupport = propertyChangeSupport;
-    }
-
-    public List<Car> getParkedCars() {
-        return parkedCars;
-    }
-
     public void park(Car car) {
-        ParkingOccupancyState currentValue = new ParkingOccupancyState(capacity, parkedCars.size());
-        parkedCars.add(car);
-        ParkingOccupancyState updatedValue = new ParkingOccupancyState(capacity, parkedCars.size());
-        propertyChangeSupport.firePropertyChange(EVENT_NAME, currentValue, updatedValue);
+        update(parkedCars::add, car);
     }
 
     public void retrieve(Car car) {
+        update(parkedCars::remove, car);
+    }
+
+    private void update(Consumer<Car> consumer, Car car) {
         ParkingOccupancyState currentValue = new ParkingOccupancyState(capacity, parkedCars.size());
-        parkedCars.remove(car);
+        consumer.accept(car);
         ParkingOccupancyState updatedValue = new ParkingOccupancyState(capacity, parkedCars.size());
         propertyChangeSupport.firePropertyChange(EVENT_NAME, currentValue, updatedValue);
     }
@@ -79,5 +70,17 @@ public class ParkingLot {
 
     public boolean contains(Car car) {
         return parkedCars.contains(car);
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
+        this.propertyChangeSupport = propertyChangeSupport;
+    }
+
+    public List<Car> getParkedCars() {
+        return parkedCars;
     }
 }

@@ -18,12 +18,6 @@ public class ParkingLots {
         this.list = list;
     }
 
-    public Optional<ParkingLot> findLotWithCapacity(double maxAcceptableCapacity) {
-        return list.stream()
-                .filter(lot -> lot.capacityPercentage() < maxAcceptableCapacity)
-                .findFirst();
-    }
-
     public Optional<ParkingLot> findLotWith(Car car) {
         return list.stream()
                 .filter(lot -> lot.contains(car))

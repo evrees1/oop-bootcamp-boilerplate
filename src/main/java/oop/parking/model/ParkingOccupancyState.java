@@ -27,7 +27,6 @@ public class ParkingOccupancyState {
                 '}';
     }
 
-
     // TODO create root class or default interface with the first two statements
     @Override
     public boolean equals(Object obj) {
@@ -40,8 +39,4 @@ public class ParkingOccupancyState {
         return this.maxCapacity == other.maxCapacity &&
                 this.currentOccupancy == other.currentOccupancy;
     }
-
-    //    public static ParkingCapacityChangeEvent getEventValue(PropertyChangeEvent event) {
-//        return (ParkingCapacityChangeEvent) event.getNewValue();
-//    }
 }

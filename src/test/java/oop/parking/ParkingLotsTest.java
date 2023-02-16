@@ -33,31 +33,6 @@ class ParkingLotsTest {
     }
 
     @Test
-    void findLotWithCapacityShouldReturnLotWhenLotWithCapacityFound() {
-        given(lotA.capacityPercentage()).willReturn(0.9);
-        given(lotB.capacityPercentage()).willReturn(0.8);
-        given(lotC.capacityPercentage()).willReturn(0.79);
-
-        double maxAcceptableCapacity = 0.8;
-        Optional<ParkingLot> actual = subject.findLotWithCapacity(maxAcceptableCapacity);
-
-        assertTrue(actual.isPresent());
-        assertEquals(lotC, actual.get());
-    }
-
-    @Test
-    void findLotWithCapacityShouldReturnEmptyWhenLotWithCapacityNotFound() {
-        given(lotA.capacityPercentage()).willReturn(0.9);
-        given(lotB.capacityPercentage()).willReturn(0.8);
-        given(lotC.capacityPercentage()).willReturn(0.85);
-
-        double maxAcceptableCapacity = 0.8;
-        Optional<ParkingLot> actual = subject.findLotWithCapacity(maxAcceptableCapacity);
-
-        assertTrue(actual.isEmpty());
-    }
-
-    @Test
     void findLotWithCarShouldReturnLotWhenLotWithCarFound() {
         given(lotA.contains(car)).willReturn(false);
         given(lotB.contains(car)).willReturn(true);
