@@ -1,6 +1,6 @@
 package oop.parking;
 
-import oop.parking.domain.Car;
+import oop.parking.model.Car;
 
 import java.util.Optional;
 
@@ -19,6 +19,6 @@ public class Assistant {
 
     public void retrieveCar(Car car) {
         Optional<ParkingLot> lot = parkingLots.findLotWith(car);
-        lot.ifPresent(l -> l.retrieveCar(car));
+        lot.ifPresent(l -> l.retrieve(car));
     }
 }

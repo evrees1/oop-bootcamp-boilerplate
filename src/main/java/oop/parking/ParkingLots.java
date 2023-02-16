@@ -1,6 +1,6 @@
 package oop.parking;
 
-import oop.parking.domain.Car;
+import oop.parking.model.Car;
 
 import java.util.List;
 import java.util.Optional;

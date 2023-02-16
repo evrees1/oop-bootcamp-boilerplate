@@ -1,7 +1,7 @@
 package oop.parking.strategy
 
 import oop.parking.ParkingLot
-import oop.parking.domain.Car
+import oop.parking.model.Car
 import oop.parking.ParkingLots
 import spock.lang.Specification
 
@@ -22,8 +22,8 @@ class DefaultParkingStrategySpec extends Specification {
         subject.park(car, new ParkingLots(List.of(lotA, lotB)))
 
         then:
-        0 * lotA.parkCar(car)
-        0 * lotB.parkCar(car)
+        0 * lotA.park(car)
+        0 * lotB.park(car)
     }
 
 

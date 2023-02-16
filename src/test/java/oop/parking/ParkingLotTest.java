@@ -1,62 +1,82 @@
 package oop.parking;
 
-import oop.parking.domain.Car;
+import oop.parking.builder.ParkingLotBuilder;
+import oop.parking.model.Car;
+import oop.parking.model.ParkingOccupancyState;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import java.beans.PropertyChangeSupport;
+
+import static oop.parking.ParkingLot.EVENT_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 public class ParkingLotTest {
 
-    private ParkingLot parkingLot;
+    private ParkingLot subject;
+    private Owner owner = new Owner();
+
+    @Mock
+    private PropertyChangeSupport propertyChangeSupport;
 
     @BeforeEach
     void setUp() {
-        this.parkingLot = new ParkingLot(2);
+        MockitoAnnotations.openMocks(this);
+
+        this.subject = ParkingLotBuilder.builder()
+                .withOwner(owner)
+                .withCapacity(2)
+                .build();
+
+        subject.setPropertyChangeSupport(propertyChangeSupport);
     }
 
     @Test
-    void itShouldBeAbleToParkCar() {
+    void parkShouldParkCar() {
         Car car = new Car("ABC-123");
-        parkingLot.parkCar(car);
+        subject.park(car);
 
-        assertTrue(parkingLot.contains(car));
+        assertTrue(subject.contains(car));
+
+        ParkingOccupancyState currentValue = new ParkingOccupancyState(2, 0);
+        ParkingOccupancyState updatedValue = new ParkingOccupancyState(2, 1);
+
+        verify(propertyChangeSupport).firePropertyChange(EVENT_NAME, currentValue, updatedValue);
     }
 
     @Test
-    void itShouldBeAbleToRetrieveACar() {
+    void retrieveShouldRetrieveCar() {
         Car car = new Car("ABC-123");
-        parkingLot.parkCar(car);
+        subject.park(car);
 
-        parkingLot.retrieveCar(car);
-        assertFalse(parkingLot.getParkedCars().contains(car.getId()));
+        subject.retrieve(car);
+        assertFalse(subject.getParkedCars().contains(car));
+
+        ParkingOccupancyState currentValue = new ParkingOccupancyState(2, 1);
+        ParkingOccupancyState updatedValue = new ParkingOccupancyState(2, 0);
+        verify(propertyChangeSupport).firePropertyChange(EVENT_NAME, currentValue, updatedValue);
     }
 
     @Test
-    void itShouldBeAbleToCheckIfCarIsParked() {
+    void containsShouldReturnTrueWhenContainsCar() {
         final Car car = new Car("ABC-123");
-        parkingLot.parkCar(car);
+        subject.park(car);
 
-        assertTrue(parkingLot.contains(car));
+        assertTrue(subject.contains(car));
     }
 
     @Test
-    void itShouldNotParkACarWhenIsFull() {
-        Car carToFind = new Car("ABC-123");
-        parkingLot.parkCar(new Car("1"));
-        parkingLot.parkCar(new Car("2"));
+    void capacityPercentageShouldReturnPercentageOfCapacityInUse() {
+        subject.park(new Car("1"));
 
-        parkingLot.parkCar(carToFind);
-
-        assertFalse(parkingLot.contains(carToFind));
-    }
-
-    @Test
-    void itShouldReturnPercentageOfUsedCapacity() {
-        parkingLot.parkCar(new Car("1"));
-
-        assertEquals(parkingLot.capacityPercentage(), 0.5);
+        assertEquals(subject.capacityPercentage(), 0.5);
     }
 }

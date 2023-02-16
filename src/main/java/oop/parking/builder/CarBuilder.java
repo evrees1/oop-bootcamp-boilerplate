@@ -1,6 +1,6 @@
 package oop.parking.builder;
 
-import oop.parking.domain.Car;
+import oop.parking.model.Car;
 
 public class CarBuilder {
     private String id;

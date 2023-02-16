@@ -1,7 +1,9 @@
 package oop.parking;
 
-import oop.parking.domain.Car;
+import oop.parking.model.Car;
+import oop.parking.model.ParkingOccupancyState;
 
+import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -11,12 +13,12 @@ import java.util.List;
 public class ParkingLot {
 
     private static final int CAPACITY_CALCULATION_SCALE = 2;
+    static final String EVENT_NAME = "capacityChanged";
 
-    private String id;
-    private PropertyChangeSupport propertyChangeSupport;
     private final int capacity;
     private final List<Car> parkedCars = new ArrayList<>();
     private boolean acceptsHandicapped;
+    private PropertyChangeSupport propertyChangeSupport;
 
     public ParkingLot(int capacity) {
         this.capacity = capacity;
@@ -24,10 +26,10 @@ public class ParkingLot {
 
     public ParkingLot() {
         this(5);
+        propertyChangeSupport = new PropertyChangeSupport(this);
     }
 
-    public ParkingLot(String id, int capacity, boolean acceptsHandicapped, Owner owner) {
-        this.id = id;
+    public ParkingLot(int capacity, boolean acceptsHandicapped, Owner owner) {
         this.capacity = capacity;
         this.acceptsHandicapped = acceptsHandicapped;
 
@@ -35,20 +37,30 @@ public class ParkingLot {
         propertyChangeSupport.addPropertyChangeListener(owner);
     }
 
-    public void parkCar(Car newCar) {
-        if (this.hasFreeSlots()) {
-//            double capacityBefore = capacityPercentage();
-            parkedCars.add(newCar);
-//            §.firePropertyChange("capacityChanged", capacityBefore, capacityPercentage());
-        }
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propertyChangeSupport.addPropertyChangeListener(listener);
+    }
+
+    public void setPropertyChangeSupport(PropertyChangeSupport propertyChangeSupport) {
+        this.propertyChangeSupport = propertyChangeSupport;
     }
 
     public List<Car> getParkedCars() {
         return parkedCars;
     }
 
-    public boolean retrieveCar(Car car) {
-        return parkedCars.remove(car);
+    public void park(Car car) {
+        ParkingOccupancyState currentValue = new ParkingOccupancyState(capacity, parkedCars.size());
+        parkedCars.add(car);
+        ParkingOccupancyState updatedValue = new ParkingOccupancyState(capacity, parkedCars.size());
+        propertyChangeSupport.firePropertyChange(EVENT_NAME, currentValue, updatedValue);
+    }
+
+    public void retrieve(Car car) {
+        ParkingOccupancyState currentValue = new ParkingOccupancyState(capacity, parkedCars.size());
+        parkedCars.remove(car);
+        ParkingOccupancyState updatedValue = new ParkingOccupancyState(capacity, parkedCars.size());
+        propertyChangeSupport.firePropertyChange(EVENT_NAME, currentValue, updatedValue);
     }
 
     public boolean hasFreeSlots() {

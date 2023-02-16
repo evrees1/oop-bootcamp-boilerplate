@@ -2,26 +2,15 @@ package oop.parking.builder;
 
 import oop.parking.Owner;
 import oop.parking.ParkingLot;
-import oop.parking.domain.Car;
-
-import java.beans.PropertyChangeSupport;
-import java.util.ArrayList;
-import java.util.List;
 
 public class ParkingLotBuilder {
 
-    private String id;
     private int capacity;
     private boolean acceptsHandicapped;
     private Owner owner;
 
     public static ParkingLotBuilder builder() {
         return new ParkingLotBuilder();
-    }
-
-    public ParkingLotBuilder withId(String id) {
-        this.id = id;
-        return this;
     }
 
     public ParkingLotBuilder withCapacity(int capacity) {
@@ -40,6 +29,6 @@ public class ParkingLotBuilder {
     }
 
     public ParkingLot build() {
-        return new ParkingLot(id, capacity, acceptsHandicapped, owner);
+        return new ParkingLot(capacity, acceptsHandicapped, owner);
     }
 }

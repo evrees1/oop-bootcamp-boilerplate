@@ -1,74 +1,60 @@
 package oop.parking;
 
 import oop.parking.builder.ParkingLotBuilder;
-import oop.parking.domain.Car;
+import oop.parking.model.Car;
+import oop.parking.model.ParkingOccupancyState;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.beans.PropertyChangeEvent;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Disabled
 class OwnerTest {
 
-    private Owner owner;
-    private ParkingLotBuilder parkingLotBuilder;
-    private ParkingLot parkingLot;
-
-    @BeforeEach
-    void setUp() {
-        this.owner = new Owner();
-
-        parkingLotBuilder = ParkingLotBuilder.builder()
-                .withOwner(owner);
-
-    }
+    private Owner subject = new Owner();
     
     @Test
-    void itShouldGiveAnOvercrowdedAlertWhenCapacityLimitIsExceeded() {
-        parkingLot = parkingLotBuilder
-                .withCapacity(5)
-                .build();
+    void shouldGiveHighOccupancyAlertWhenThresholdExceeded() {
+        PropertyChangeEvent propertyChangeEvent = event(5, 3, 4);
 
-        parkingLot.parkCar(new Car("123"));
-        parkingLot.parkCar(new Car("456"));
-        parkingLot.parkCar(new Car("789"));
-        parkingLot.parkCar(new Car("000"));
-        assertTrue(owner.isAlerted());
+        subject.propertyChange(propertyChangeEvent);
+
+        assertTrue(subject.isHighOccupancyAlerted());
     }
 
     @Test
-    void itShouldNotGiveAnOvercrowdedAlertWhenBelowCapacityLimit() {
-        parkingLot = parkingLotBuilder
-                .withCapacity(4)
-                .build();
+    void shouldNotGiveHighOccupancyAlertWhenThresholdNotExceeded() {
+        PropertyChangeEvent propertyChangeEvent = event(5, 2, 3);
 
-        parkingLot.parkCar(new Car("1"));
-        parkingLot.parkCar(new Car("2"));
-        assertFalse(owner.isAlerted());
+        subject.propertyChange(propertyChangeEvent);
+
+        assertFalse(subject.isHighOccupancyAlerted());
     }
 
     @Test
-    void itShouldGiveAnLowOccupancyAlertWhenCapacityIsBellowTheLimit() {
-        parkingLot = parkingLotBuilder
-                .withCapacity(10)
-                .build();
+    void shouldGiveLowOccupancyAlertWhenThresholdExceeded() {
+        PropertyChangeEvent propertyChangeEvent = event(5, 2, 1);
 
-        parkingLot.parkCar(new Car("1"));
+        subject.propertyChange(propertyChangeEvent);
 
-        assertTrue(owner.isLowOccupancyAlerted());
+        assertTrue(subject.isLowOccupancyAlerted());
     }
 
     @Test
-    void itShouldNotGiveAnLowOccupancyAlertWhenCapacityIsAboveTheLimit() {
-        parkingLot = parkingLotBuilder
-                .withCapacity(10)
-                .build();
+    void shouldNotGiveLowOccupancyAlertWhenThresholdNotExceeded() {
+        PropertyChangeEvent propertyChangeEvent = event(5, 3, 2);
 
-        parkingLot.parkCar(new Car("1"));
-        parkingLot.parkCar(new Car("2"));
+        subject.propertyChange(propertyChangeEvent);
 
-        assertFalse(owner.isLowOccupancyAlerted());
+        assertFalse(subject.isLowOccupancyAlerted());
+    }
+
+    private PropertyChangeEvent event(int maxCapacity, int previous, int current) {
+        ParkingOccupancyState previousState = new ParkingOccupancyState(maxCapacity, previous);
+        ParkingOccupancyState currentState = new ParkingOccupancyState(maxCapacity, current);
+
+        return new PropertyChangeEvent(new ParkingLot(), "change", previousState, currentState);
     }
 }

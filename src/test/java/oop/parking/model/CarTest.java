@@ -1,4 +1,4 @@
-package oop.parking.domain;
+package oop.parking.model;
 
 
 import oop.parking.ParkingStrategy;

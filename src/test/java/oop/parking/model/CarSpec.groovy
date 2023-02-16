@@ -1,6 +1,6 @@
-package oop.parking.domain
+package oop.parking.model
 
-import oop.parking.builder.CarBuilder
+
 import oop.parking.strategy.DefaultParkingStrategy
 import oop.parking.strategy.LargeCarParkingStrategy
 import oop.parking.strategy.LargeHandicapParkingStrategy

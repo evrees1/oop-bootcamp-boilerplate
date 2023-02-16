@@ -21,7 +21,7 @@ class DefaultParkingStrategyTest extends BaseParkingStrategyTest {
 
         subject.park(car, parkingLots);
 
-        verify(lotB).parkCar(car);
+        verify(lotB).park(car);
     }
 
 }

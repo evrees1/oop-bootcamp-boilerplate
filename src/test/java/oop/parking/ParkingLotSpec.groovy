@@ -1,37 +1,39 @@
 package oop.parking
 
-import oop.parking.domain.Car
+import oop.parking.builder.ParkingLotBuilder
+import oop.parking.model.Car
+import oop.parking.model.ParkingOccupancyState
 import spock.lang.Specification
 
+import java.beans.PropertyChangeSupport
+
+import static oop.parking.ParkingLot.EVENT_NAME
 import static org.junit.jupiter.api.Assertions.*
 
 class ParkingLotSpec extends Specification {
 
-    var subject = new ParkingLot(1)
+    PropertyChangeSupport propertyChangeSupport = Mock()
+    ParkingLot subject = createParkingLot()
+
+    def setup() {
+        subject.setPropertyChangeSupport(propertyChangeSupport);
+    }
 
     def "should park car"() {
         given:
         Car car = new Car("ABC-123")
 
         when:
-        subject.parkCar(car);
+        subject.park(car)
 
         then:
         assertTrue(subject.contains(car))
-    }
-
-    def "should not park car when full"() {
-        given:
-        subject.parkCar(new Car("A"))
 
         and:
-        Car anotherCar = new Car("B")
-
-        when:
-        subject.parkCar(anotherCar);
-
-        then:
-        assertFalse(subject.contains(anotherCar))
+        1 * propertyChangeSupport.firePropertyChange(
+                EVENT_NAME,
+                new ParkingOccupancyState(2, 0),
+                new ParkingOccupancyState(2, 1))
     }
 
     def "should return true when lot has capacity"() {
@@ -44,7 +46,8 @@ class ParkingLotSpec extends Specification {
 
     def "should return false when lot not has capacity"() {
         given:
-        subject.parkCar(new Car("A"))
+        subject.park(new Car("A"))
+        subject.park(new Car("B"))
 
         when:
         boolean actual = subject.hasFreeSlots()
@@ -55,11 +58,11 @@ class ParkingLotSpec extends Specification {
 
     def "should return #expected when capacity is #capacity and #spacesInUse spaces are in use"() {
         given:
-        subject = new ParkingLot(capacity)
+        subject = createParkingLot(capacity)
 
         and:
         spacesInUse.times {
-            subject.parkCar(new Car("abc"))
+            subject.park(new Car("abc"))
         }
 
         when:
@@ -75,5 +78,12 @@ class ParkingLotSpec extends Specification {
         11       | 8           | 0.73
         13       | 8           | 0.62
         79       | 71          | 0.90
+    }
+
+    def createParkingLot(int capacity = 2) {
+        ParkingLotBuilder.builder()
+                .withOwner(new Owner())
+                .withCapacity(capacity)
+                .build()
     }
 }

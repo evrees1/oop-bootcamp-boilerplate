@@ -25,6 +25,6 @@ class HandicapParkingStrategyTest extends BaseParkingStrategyTest {
 
         subject.park(car, parkingLots);
 
-        verify(lotC).parkCar(car);
+        verify(lotC).park(car);
     }
 }

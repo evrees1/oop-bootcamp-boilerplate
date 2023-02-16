@@ -1,9 +1,10 @@
 package oop.parking.functional;
 
 import oop.parking.Assistant;
+import oop.parking.Owner;
 import oop.parking.ParkingLot;
 import oop.parking.builder.ParkingLotBuilder;
-import oop.parking.domain.Car;
+import oop.parking.model.Car;
 import oop.parking.builder.CarBuilder;
 import oop.parking.ParkingLots;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AssistantFunctionalTest {
 
+    private Owner owner = new Owner();
     private Assistant assistant;
 
     private ParkingLot lotA = new ParkingLot();
@@ -27,7 +29,7 @@ public class AssistantFunctionalTest {
 
     private ParkingLot lotC = new ParkingLot();
     private ParkingLot lotD = ParkingLotBuilder.builder()
-            .withCapacity(2)
+            .withCapacity(4)
             .withAcceptsHandicapped()
             .build();
 
@@ -35,21 +37,27 @@ public class AssistantFunctionalTest {
     void setUp() {
         ParkingLots lots = new ParkingLots(List.of(lotA, lotB, lotC, lotD));
         assistant = new Assistant(lots);
+
+        lots.getList().forEach(l -> l.addPropertyChangeListener(owner));
     }
 
     @Test
-    public void itShould() {
+    public void shouldUpdateLotsWithCarsAndFireEvents() {
         Car sedan = new Car("sedan-1");
         Car hatch = new Car("hatch-1");
         testDefault(sedan, hatch);
 
-        testLargeCars();
+        Car van = testLargeCars();
         testHandycapableCars();
-        test80PercentLimit();
+        testCapacityLimits();
         testRetrieval(sedan, hatch);
 
         Car truck = large("TRUCK-1");
         parkAndAssert(truck, lotA);
+
+        testHighOccupancyAlert();
+        testLowOccupancyAlert(van);
+
     }
 
     private void testDefault(Car... cars) {
@@ -59,12 +67,13 @@ public class AssistantFunctionalTest {
         });
     }
 
-    private void testLargeCars() {
+    private Car testLargeCars() {
         Car suv = large("SUV-1");
         parkAndAssert(suv, lotB);
 
         Car van = large("van-1");
         parkAndAssert(van, lotC);
+        return van;
     }
 
     private void testHandycapableCars() {
@@ -85,11 +94,14 @@ public class AssistantFunctionalTest {
         parkAndAssert(handicapableHatch, lotD);
     }
 
-    private void test80PercentLimit() {
+    private void testCapacityLimits() {
         parkAndAssert(new Car("A1"), lotA);
         parkAndAssert(new Car("A2"), lotA);
-        //LotA full
-        parkAndAssert(new Car("A3"), lotC);
+        //LotA at capacity
+        Car overCapacityCar = new Car("A3");
+        assistant.parkCar(overCapacityCar);
+        assertFalse(lotA.contains(overCapacityCar));
+        assertTrue(lotC.contains(overCapacityCar));
     }
 
     private void testRetrieval(Car... cars) {
@@ -97,6 +109,23 @@ public class AssistantFunctionalTest {
             assistant.retrieveCar(car);
             assertFalse(lotA.contains(car));
         });
+    }
+
+    private void testHighOccupancyAlert() {
+        assertFalse(owner.isHighOccupancyAlerted());
+
+        Car handicapableCar = new CarBuilder("hatch-2")
+                .withHandicapped()
+                .build();
+
+        parkAndAssert(handicapableCar, lotD);
+        assertTrue(owner.isHighOccupancyAlerted());
+    }
+
+    private void testLowOccupancyAlert(Car van) {
+        assertFalse(owner.isLowOccupancyAlerted());
+        assistant.retrieveCar(van);
+        assertTrue(owner.isLowOccupancyAlerted());
     }
 
     private Car large(String id) {
