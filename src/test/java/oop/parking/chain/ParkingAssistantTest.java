@@ -44,5 +44,4 @@ class ParkingAssistantTest {
 
         verify(highEndAssistant).park(car, parkingLots);
     }
-
 }

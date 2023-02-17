@@ -10,6 +10,10 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+
 public class BaseParkingStrategyTest {
 
     protected ParkingStrategy subject;
@@ -32,5 +36,12 @@ public class BaseParkingStrategyTest {
 //                .startMocking();
 
         parkingLots = new ParkingLots(List.of(lotA, lotB, lotC));
+    }
+
+    void verifyNoParks() {
+        verify(lotB, never()).park(any());
+        verify(lotA, never()).park(any());
+        verify(lotC, never()).park(any());
+
     }
 }
