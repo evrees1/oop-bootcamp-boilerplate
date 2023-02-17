@@ -1,9 +1,6 @@
 package oop.parking;
 
-import oop.parking.builder.ParkingLotBuilder;
-import oop.parking.model.Car;
 import oop.parking.model.ParkingOccupancyState;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.beans.PropertyChangeEvent;

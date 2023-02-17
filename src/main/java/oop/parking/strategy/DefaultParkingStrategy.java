@@ -1,8 +1,8 @@
 package oop.parking.strategy;
 
 import oop.parking.ParkingLot;
-import oop.parking.model.Car;
 import oop.parking.ParkingLots;
+import oop.parking.model.Car;
 
 import java.util.Optional;
 

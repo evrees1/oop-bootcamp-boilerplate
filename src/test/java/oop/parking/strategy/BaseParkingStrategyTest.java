@@ -1,9 +1,9 @@
 package oop.parking.strategy;
 
 import oop.parking.ParkingLot;
+import oop.parking.ParkingLots;
 import oop.parking.ParkingStrategy;
 import oop.parking.model.Car;
-import oop.parking.ParkingLots;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;

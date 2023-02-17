@@ -6,6 +6,7 @@ public class CarBuilder {
     private String id;
     private boolean large;
     private boolean handicapped;
+    private boolean highEnd;
 
     public CarBuilder(String id) {
         this.id = id;
@@ -21,7 +22,12 @@ public class CarBuilder {
         return this;
     }
 
+    public CarBuilder withHighEnd() {
+        this.highEnd = true;
+        return this;
+    }
+
     public Car build() {
-        return new Car(id, large, handicapped);
+        return new Car(id, large, handicapped, highEnd);
     }
 }

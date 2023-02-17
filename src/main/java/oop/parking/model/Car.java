@@ -11,19 +11,29 @@ public class Car {
     private String id;
     private boolean large;
     private boolean handicapped;
+    private boolean highEnd;
 
     public Car(String id) {
         this.id = id;
     }
 
-    public Car(String id, boolean large, boolean handicapped) {
+    private Car(String id, boolean large, boolean handicapped) {
         this.id = id;
         this.large = large;
         this.handicapped = handicapped;
     }
 
+    public Car(String id, boolean large, boolean handicapped, boolean highEnd) {
+        this(id, large, handicapped);
+        this.highEnd = highEnd;
+    }
+
     public String getId() {
         return id;
+    }
+
+    public boolean isHighEnd() {
+        return highEnd;
     }
 
     public ParkingStrategy findStrategyToPark() {
