@@ -9,8 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Optional;
-
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
@@ -70,19 +68,11 @@ class DefaultAssistantTest {
 
     @Test
     void retrieveShouldRetrieveFromLotWhenLotWithCarFound() {
-        given(parkingLots.findLotWith(car)).willReturn(Optional.of(lot));
+        given(parkingLots.findLotWith(car)).willReturn(lot);
 
         subject.retrieve(car);
 
         verify(lot).retrieve(car);
     }
 
-    @Test
-    void retrieveShouldNotWhenCarNotFound() {
-        given(parkingLots.findLotWith(car)).willReturn(Optional.empty());
-
-        subject.retrieve(car);
-
-        verify(lot, never()).retrieve(any());
-    }
 }

@@ -1,16 +1,16 @@
 package oop.parking;
 
 import oop.parking.model.Car;
+import oop.parking.model.ParkingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.BDDMockito.given;
 
 class ParkingLotsTest {
@@ -37,21 +37,18 @@ class ParkingLotsTest {
         given(lotA.contains(car)).willReturn(false);
         given(lotB.contains(car)).willReturn(true);
 
-        Optional<ParkingLot> actual = subject.findLotWith(car);
+        ParkingLot actual = subject.findLotWith(car);
 
-        assertTrue(actual.isPresent());
-        assertEquals(lotB, actual.get());
+        assertEquals(lotB, actual);
     }
 
     @Test
-    void findLotWithCarShouldReturnEmptyWhenLotWithCarNotFound() {
+    void findLotWithCarShouldThrowExceptionWhenLotWithCarNotFound() {
         given(lotA.contains(car)).willReturn(false);
         given(lotB.contains(car)).willReturn(false);
         given(lotC.contains(car)).willReturn(false);
 
-        Optional<ParkingLot> actual = subject.findLotWith(car);
-
-        assertTrue(actual.isEmpty());
+        assertThrows(ParkingException.class, () -> subject.findLotWith(car));
     }
 
 }

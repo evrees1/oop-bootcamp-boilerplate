@@ -1,9 +1,9 @@
 package oop.parking;
 
 import oop.parking.model.Car;
+import oop.parking.model.ParkingException;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ParkingLots {
@@ -18,10 +18,11 @@ public class ParkingLots {
         this.list = list;
     }
 
-    public Optional<ParkingLot> findLotWith(Car car) {
+    public ParkingLot findLotWith(Car car) {
         return list.stream()
                 .filter(lot -> lot.contains(car))
-                .findFirst();
+                .findFirst()
+                .orElseThrow(ParkingException::new);
     }
 
     public Stream<ParkingLot> stream() {

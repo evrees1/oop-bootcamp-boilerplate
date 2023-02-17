@@ -1,5 +1,6 @@
 package oop.parking.chain;
 
+import com.github.javaparser.ParseException;
 import oop.parking.ParkingLot;
 import oop.parking.ParkingLots;
 import oop.parking.model.Car;
@@ -24,7 +25,7 @@ public class DefaultAssistant extends AbstractParkingAssistant {
     }
 
     public void retrieve(Car car) {
-        Optional<ParkingLot> lot = parkingLots.findLotWith(car);
-        lot.ifPresent(l -> l.retrieve(car));
+        parkingLots.findLotWith(car)
+                .retrieve(car);
     }
 }
